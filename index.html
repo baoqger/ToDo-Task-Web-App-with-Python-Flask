@@ -1,0 +1,87 @@
+<html>
+<head>
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+$(function() {
+
+	function myUpdatetime() {
+		$.getJSON('/todotask/update',
+			function(data) {
+				$(".status").each(function(index, obj){
+					if (data.result[index][0] == "Created") {
+						$(this).text("Time passed:" + data.result[index][1]);
+						}
+					else {
+						$(this).text("Task done:" + data.result[index][1]);
+					}
+				}); 
+			});
+	}
+
+	$(window).load(function(){
+	    myUpdatetime();
+		setInterval(myUpdatetime, 600*1000);
+	});
+
+});
+	
+
+
+</script>
+	
+	
+	
+	</head>
+
+	
+	<body>
+	<div class = 'pane'>
+		<div class = 'header'>
+		<h1>ToDo Task</h1>
+	</div>
+
+	<a href = '{{ url_for('newTask') }}'>Create New Task</a>
+
+
+<div class = 'flash'>
+	  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+     {% endwith %}
+
+</div>
+
+
+		{% for i in items %}
+    <div >
+	<span ><p>Task{{ i.id  }}:{{ i.content  }}</p></span>
+	<span ><p>Priority{{ i.priority  }}</p></span>
+	<span ><p class= "status"></p></span>
+	</div>
+	<div class = "editdeletepane">
+	<a href='{{url_for('editTask',task_id=i.id)}}' >Edit</a>
+	<a href='{{url_for('deleteTask',task_id=i.id)}}' >Delete</a>
+	<a href='{{url_for('doneTask',task_id=i.id)}}' >Done</a>
+	</div>
+	
+	
+		{% endfor %}
+
+
+		
+		
+
+	</body>
+
+
+
+
+</html>

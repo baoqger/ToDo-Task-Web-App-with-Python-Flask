@@ -1,0 +1,20 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<body>
+<h1> Task{{item.id}} was finished? </h1>
+
+<form action="{{ url_for('doneTask',task_id = item.id)}}" method = 'post'>
+
+<input type='submit', value = 'Done'>
+
+
+
+
+</form>
+
+<a href = '{{url_for('index')}}'> Cancel </a>
+</body>
+
+</html>
